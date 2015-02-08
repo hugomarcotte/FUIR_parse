@@ -1,0 +1,14 @@
+{
+    "applications": {
+        "F.U. I'm Right": {
+            "applicationId": "DJnfc0KsF8WRF0K2lr25mVm95Uzg0xnUAG72axAX", 
+            "masterKey": "j4UgzPaVkFI6WOgHLDig2UOlD8ptnCU9LLvDBcJd"
+        }, 
+        "_default": {
+            "link": "F.U. I'm Right"
+        }
+    }, 
+    "global": {
+        "parseVersion": "1.2.19"
+    }
+}

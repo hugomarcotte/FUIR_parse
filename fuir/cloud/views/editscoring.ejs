@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Edit Question Scoring</title>
+    <style>
+    body { font-family: Helvetica, Arial, sans-serif; }
+    div { width: 800px; height: 600px; margin: 40px auto; padding: 20px; border: 2px solid #5298fc; }
+    td { padding: 20px; }
+    h1 { font-size: 30px; margin: 0; }
+    p { margin: 10px 0; }
+    em { font-family: monospace; }
+    a { color: #5298fc; text-decoration: none; }
+    </style>
+  </head>
+  <body>
+  
+    <div>
+  
+    <h1>Scoring Admin Values</h1>
+
+    <form method="post" action="/saveScoring">
+     
+     <table>
+        <tr>
+            <td>
+
+      weightAnswered: <br />
+        <input name="weightAnswered" value='<%= weightAnswered %>'></input> <br/>
+		<br />
+
+      weightViewed: <br />
+        <input name="weightViewed" value='<%= weightViewed %>'></input> <br/>
+		<br />
+
+      weightFavorited: <br />
+        <input name="weightFavorited" value='<%= weightFavorited %>'></input> <br/>
+		<br />
+
+      weightEmailShareCount: <br />
+        <input name="weightEmailShareCount" value='<%= weightEmailShareCount %>'></input> <br/>
+		<br />
+
+      weightSmsShareCount: <br />
+        <input name="weightSmsShareCount" value='<%= weightSmsShareCount %>'></input> <br/>
+		<br />
+
+      weightFacebookShareCount: <br />
+        <input name="weightFacebookShareCount" value='<%= weightFacebookShareCount %>'></input> <br/>
+                
+            </td>
+            <td>
+                
+                
+      weightTwitterShareCount: <br />
+        <input name="weightTwitterShareCount" value='<%= weightTwitterShareCount %>'></input> <br/>
+		<br />
+
+      weightOtherShareCount: <br />
+        <input name="weightOtherShareCount" value='<%= weightOtherShareCount %>'></input> <br/>
+		<br />
+
+      weightRecency: <br />
+        <input name="weightRecency" value='<%= weightRecency %>'></input> <br/>
+		<br />
+
+      weightConteniousness: <br />
+        <input name="weightConteniousness" value='<%= weightConteniousness %>'></input> <br/>
+		<br />
+
+      weightAdminOverride: <br />
+        <input name="weightAdminOverride" value='<%= weightAdminOverride %>'></input> <br/>
+		<br />
+
+      weightRandomness: <br />
+        <input name="weightRandomness" value='<%= weightRandomness %>'></input> <br/>
+    
+            </td>
+        </tr>
+     </table>
+
+    <input class="button" type="submit" value="Save">
+
+    </form>
+    
+    <p><a href="/adminActions.html">Actions</a> </p>
+
+    </div>
+    
+  </body>
+</html>
