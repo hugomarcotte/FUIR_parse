@@ -301,7 +301,11 @@ Parse.Cloud.define("GetUnansweredQuestions", function(request, response) {
       query.find({
         success: function(results) {
           var stats = results[0];
-          if (!stats) response.error("Could not find a UserStats record for user " + paramUserId);
+          if (!stats)
+          {
+              console.log("Could not find a UserStats record for user " + paramUserId);
+              response.error("Could not find a UserStats record for user " + paramUserId);
+          }
 
           var userViewedQuestionIds = stats.get("viewedList");
 
@@ -321,18 +325,21 @@ Parse.Cloud.define("GetUnansweredQuestions", function(request, response) {
               response.success(questionList);
             },
             error: function(error) {
+                console.log("GetUnansweredQuestions failed, could not get Questions: "+ error.code + ": " + error.message);
               response.error("GetUnansweredQuestions failed, could not get Questions: "+ error.code + ": " + error.message);
             }
           });
 
         },
         error: function(error) {
+            console.log("GetUnansweredQuestions failed, could not get UserStats: "+ error.code + ": " + error.message);
           response.error("GetUnansweredQuestions failed, could not get UserStats: "+ error.code + ": " + error.message);
         }
 
       });
     },
     error: function(object, error) {
+        console.log("GetUnansweredQuestions failed, could not get User: "+ error.code + ": " + error.message);
       // error is an instance of Parse.Error.
       response.error("GetUnansweredQuestions failed, could not get User: "+ error.code + ": " + error.message);
     }
@@ -499,7 +506,8 @@ Parse.Cloud.define("GetUserStats", function(request, response) {
 	  viewedCount = 0;
 	}
 
-	var score = (countAsked *3) + (gNumberAnswered *5) - (viewedCount - gNumberAnswered);
+	//var score = (countAsked *3) + (gNumberAnswered *5) - (viewedCount - gNumberAnswered);
+    var score = (countAsked *10) + (gNumberAnswered *1);
 	if (score < 0) score = 0;
 
 	gUserStatsObj.set("score", score);
@@ -510,6 +518,7 @@ Parse.Cloud.define("GetUserStats", function(request, response) {
 	// stats object saved
 	response.success(savedObj);
   }, function(error) {
+        console.log("GetUserStats failed: "+ error.code + ": " + error.message);
         response.error("GetUserStats failed: "+ error.code + ": " + error.message);
   });
 
