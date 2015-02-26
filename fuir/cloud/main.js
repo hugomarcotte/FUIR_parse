@@ -885,3 +885,37 @@ Parse.Cloud.job("questionImport", function(request, status) {
   );
 
 });
+
+
+// Populate question URL after adding column
+
+//curl -X POST \
+//-H "X-Parse-Application-Id: DJnfc0KsF8WRF0K2lr25mVm95Uzg0xnUAG72axAX" \
+//-H "X-Parse-Master-Key: j4UgzPaVkFI6WOgHLDig2UOlD8ptnCU9LLvDBcJd" \
+//-H "Content-Type: application/json" \
+//-d '{"plan":"paid"}' \
+//https://api.parse.com/1/jobs/populateQuestionURL
+
+Parse.Cloud.job("populateQuestionURL", function(request, status) {
+    // Set up to modify question data
+    Parse.Cloud.useMasterKey();
+    // Query for all questions
+    var query = new Parse.Query("Question");
+    query.each(function(question) {
+
+        // Update to plan value passed in
+        question.set("URL", "http://www.fuimright.com/?qId="+question.id);
+
+        // Show task progress
+        status.message("Question: "+ question.id +" URL: " + question.get('URL'));
+
+        counter += 1;
+        return question.save();
+    }).then(function() {
+        // Set the job's success status
+        status.success("Populate question URL completed successfully.");
+    }, function(error) {
+        // Set the job's error status
+        status.error("Uh oh, something went wrong. "+error);
+    });
+});
