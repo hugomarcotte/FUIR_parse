@@ -899,21 +899,26 @@ Parse.Cloud.job("questionImport", function(request, status) {
 Parse.Cloud.job("populateQuestionURL", function(request, status) {
     // Set up to modify question data
     Parse.Cloud.useMasterKey();
+    console.log("Running job populateQuestionURL");
+    var count = 0;
     // Query for all questions
     var query = new Parse.Query("Question");
+    query.doesNotExist("URL");
+
     query.each(function(question) {
 
-        // Update to plan value passed in
+        // Update URL
         question.set("URL", "http://www.fuimright.com/?qId="+question.id);
 
+        count ++;
         // Show task progress
-        status.message("Question: "+ question.id +" URL: " + question.get('URL'));
+        status.message("Question: "+ question.id);
 
-        counter += 1;
         return question.save();
     }).then(function() {
+        console.log("Job populateQuestionURL completed. Number of questions affected: " +count);
         // Set the job's success status
-        status.success("Populate question URL completed successfully.");
+        status.success("Populate question URL completed successfully. count:" +count);
     }, function(error) {
         // Set the job's error status
         status.error("Uh oh, something went wrong. "+error);
