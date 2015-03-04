@@ -59,6 +59,11 @@ Parse.Cloud.beforeSave("Question", function(request, response) {
 	request.object.set("score", val);
 	console.log("beforeSave() Question: set new score to: " + val);
 
+    // Set question URL
+    if(!request.object.get('URL')) {
+        request.object.set("URL", "http://www.fuimright.com/?qId="+request.object.id);
+    }
+
 	response.success();  // Tells parse not to cancel save
     },
     function (error) {
