@@ -59,11 +59,6 @@ Parse.Cloud.beforeSave("Question", function(request, response) {
 	request.object.set("score", val);
 	console.log("beforeSave() Question: set new score to: " + val);
 
-    // Set question URL
-    if(!request.object.get('URL')) {
-        request.object.set("URL", "http://www.fuimright.com/?qId="+request.object.id);
-    }
-
 	response.success();  // Tells parse not to cancel save
     },
     function (error) {
@@ -72,7 +67,13 @@ Parse.Cloud.beforeSave("Question", function(request, response) {
 
 });
 
+Parse.Cloud.afterSave("Question", function(request){
+  var question = request.object;
 
+  // Set question URL
+  question.set("URL", "http://www.fuimright.com/?qId="+question.id);
+  question.save();
+});
 
 // -- Answer.afterSave( )
 //
@@ -908,7 +909,7 @@ Parse.Cloud.job("populateQuestionURL", function(request, status) {
     var count = 0;
     // Query for all questions
     var query = new Parse.Query("Question");
-    query.doesNotExist("URL");
+    query.equalTo("URL", "http://www.fuimright.com/?qId=undefined")
 
     query.each(function(question) {
 
