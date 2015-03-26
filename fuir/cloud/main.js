@@ -70,8 +70,9 @@ Parse.Cloud.beforeSave("Question", function(request, response) {
 Parse.Cloud.afterSave("Question", function(request){
   var question = request.object;
 
+  console.log("afterSave() Question: set URL to: http://www.fuimright.com/q?qId="+question.id);
   // Set question URL
-  question.set("URL", "http://www.fuimright.com/?qId="+question.id);
+  question.set("URL", "http://www.fuimright.com/q?qId="+question.id);
   question.save();
 });
 
@@ -906,27 +907,27 @@ Parse.Cloud.job("populateQuestionURL", function(request, status) {
     // Set up to modify question data
     Parse.Cloud.useMasterKey();
     console.log("Running job populateQuestionURL");
-    var count = 0;
+    var counter = 0;
     // Query for all questions
     var query = new Parse.Query("Question");
-    query.equalTo("URL", "http://www.fuimright.com/?qId=undefined")
+    //query.equalTo("URL", "http://www.fuimright.com/?qId=undefined");
+    query.startsWith("URL", "http://www.fuimright.com/?qId");
 
     query.each(function(question) {
 
-        // Update URL
-        question.set("URL", "http://www.fuimright.com/?qId="+question.id);
-
-        count ++;
-        // Show task progress
-        status.message("Question: "+ question.id);
-
-        return question.save();
+      question.set("URL", "http://www.fuimright.com/q?qId="+question.id);
+      if (counter % 100 === 0) {
+        // Set the  job's progress status
+        status.message(counter + " users processed.");
+      }
+      counter += 1;
+      return question.save();
     }).then(function() {
-        console.log("Job populateQuestionURL completed. Number of questions affected: " +count);
-        // Set the job's success status
-        status.success("Populate question URL completed successfully. count:" +count);
+      // Set the job's success status
+      status.success("Populate question URL completed successfully. count:" +counter);
     }, function(error) {
-        // Set the job's error status
-        status.error("Uh oh, something went wrong. "+error);
+      // Set the job's error status
+      status.error("Uh oh, something went wrong.");
     });
+
 });
